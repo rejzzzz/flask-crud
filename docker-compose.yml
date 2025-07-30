@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:6
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: usersdb
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: |
+        mongosh --eval "try {
+          db = connect('mongodb://mongo:27017/usersdb');
+          db.runCommand('ping');
+          quit(0);
+        } catch(e) {
+          print(e);
+          quit(1);
+        }" || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  flask-app:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/usersdb
+      - FLASK_ENV=production
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: on-failure
+
+volumes:
+  mongo_data:

@@ -18,29 +18,29 @@ def create_app():
     with app.app_context():
         get_db()
 
-    @app.route('/health', methods=['GET'])
+    @app.route('/', methods=['GET'])
     def health():
         return jsonify({"status": "healthy", "database": "connected"}), 200
 
-    @app.route('/users', methods=['GET'])
+    @app.route('/users/', methods=['GET'])
     def list_users():
         return get_all_users()
 
-    @app.route('/users/<user_id>', methods=['GET'])
+    @app.route('/users/<user_id>/', methods=['GET'])
     def get_user(user_id):
         return get_user_by_id(user_id)
 
-    @app.route('/users', methods=['POST'])
+    @app.route('/users/', methods=['POST'])
     def add_user():
         data = request.get_json()
         return create_user(data)
 
-    @app.route('/users/<user_id>', methods=['PUT'])
+    @app.route('/users/<user_id>/', methods=['PUT'])
     def update_user_route(user_id):
         data = request.get_json()
         return update_user(user_id, data)
 
-    @app.route('/users/<user_id>', methods=['DELETE'])
+    @app.route('/users/<user_id>/', methods=['DELETE'])
     def delete_user_route(user_id):
         return delete_user(user_id)
 
