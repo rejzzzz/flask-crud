@@ -2,8 +2,8 @@ from flask import Flask, request, jsonify
 from config import Config
 from db import get_db
 from services.user_services.create_user import create_user
-from services.user_services.get_all import get_all_users
-from services.user_services.get_by_id import get_user_by_id
+from services.user_services.get_all_users import get_all_users
+from services.user_services.get_user_by_id import get_user_by_id
 from services.user_services.update_user import update_user
 from services.user_services.delete_user import delete_user
 import os
